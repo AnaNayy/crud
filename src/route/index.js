@@ -23,7 +23,8 @@ class User {
   static getList = () => {
     return this.#list
   }
-  static getById = (id) => this.#list.find((user) => user.id === id)
+  static getById = (id) =>
+    this.#list.find((user) => user.id === id)
 
   static deleteById = (id) => {
     const index = this.#list.findIndex(
@@ -47,22 +48,22 @@ class User {
   //     } return true;
   //   } else {return false}
   // }
-    static updateById = (id, data) => {
+  static updateById = (id, data) => {
     const user = this.getById(id)
 
     if (user) {
       this.update(user, data)
-        return true
-      } else {return false}
-  } 
+      return true
+    } else {
+      return false
+    }
+  }
   static update = (user, { email }) => {
     if (email) {
       user.email = email
     }
   }
 }
-
-
 
 // ================================================================
 // router.get Створює нам один ентпоїнт
@@ -71,12 +72,10 @@ class User {
 router.get('/', function (req, res) {
   // res.render генерує нам HTML сторінку
 
-
   const list = User.getList()
   // ↙️ cюди вводимо назву файлу з сontainer
   res.render('index', {
     // вказуємо назву папки контейнера, в якій знаходяться наші стилі
-
 
     style: 'index',
 
@@ -89,18 +88,16 @@ router.get('/', function (req, res) {
         isEmpty: list.length === 0,
       },
     },
-
   })
   // ↑↑ сюди вводимо JSON дані
 })
 
 // ================================================================
 
-
 // ================================================================
 router.post('/user-create', function (req, res) {
   // console.log(req.body)
-  const { email, login, password} = req.body
+  const { email, login, password } = req.body
 
   const user = new User(email, login, password)
 
@@ -109,25 +106,23 @@ router.post('/user-create', function (req, res) {
   console.log(User.getList())
 
   res.render('success-info', {
-
     style: 'success-info',
-    info: 'User was created'
+    info: 'User was created',
   })
-
 })
 // ================================================================
 router.get('/user-delete', function (req, res) {
   // console.log(req.body)
-  const {id} = req.query
+  const { id } = req.query
 
- User.deleteById(Number(id))
+  User.deleteById(Number(id))
 
   // if (user) {
   //   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!")
   // }
   res.render('success-info', {
     style: 'success-info',
-    info: 'User was deleted'
+    info: 'User was deleted',
   })
 })
 
@@ -148,13 +143,13 @@ router.post('/user-update', function (req, res) {
   // let result = false;
   // if()
 
-//  const result = User.updateById(Number(id), {email})
+  //  const result = User.updateById(Number(id), {email})
 
   res.render('success-info', {
     style: 'success-info',
     info: result
       ? "User's email was updated"
-      : "Error occured",
+      : 'Error occured',
   })
 })
 
