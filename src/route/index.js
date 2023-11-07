@@ -224,9 +224,21 @@ router.post('/product-create', function (req, res) {
   const { name, price, description } = req.body
 
   const product = new Product(name, price, description)
+  // const { id } = req.query
 
   Product.add(product)
 
+  const updatedProductList = Product.getList()
+
+  res.render('product-list', {
+    style: 'product-list',
+    data: {
+      products: {
+        list: updatedProductList,
+        isEmpty: updatedProductList.length === 0,
+      },
+    },
+  })
   console.log(Product.getList())
   res.render('product-alert', {
     style: 'product-alert',
@@ -235,15 +247,21 @@ router.post('/product-create', function (req, res) {
 })
 //================================================
 router.get('/product-delete', function (req, res) {
-  // console.log(req.body)
   const { id } = req.query
 
-  Product.deleteById(Number(id))
+  const isDeleted = Product.deleteById(Number(id))
 
-  res.render('product-alert', {
-    style: 'product-alert',
-    info: 'Product was deleted',
-  })
+  if (isDeleted) {
+    res.render('product-alert', {
+      style: 'product-alert',
+      info: 'Product was deleted',
+    })
+  } else {
+    res.render('product-alert', {
+      style: 'product-alert',
+      info: 'Failed to delete product',
+    })
+  }
 })
 // ==============
 
@@ -259,133 +277,144 @@ router.get('/product-list', function (req, res) {
 
     data: {
       products: {
-        list,
+        list: list,
         isEmpty: list.length === 0,
       },
     },
-    cards: [
-      {
-        title: 'Stylish dress',
-        description:
-          'Elegant dress made of natural material. Suitable for special occasions',
-        price: '$1200',
-        id: 123,
-      },
-      {
-        title: 'Sports shoes',
-        description:
-          'Comfortable sports shoes. Perfect for running and hiking',
-        price: '$2200',
-        id: 1234,
-      },
-      {
-        title: 'Sunglasses',
-        description:
-          'Fashionable sunglasses. High-tech lenses protect your eyes',
-        price: '$700',
-        id: 12345,
-      },
-      {
-        title: 'Male watch',
-        description: 'Elegant male watch with leather band',
-        price: '$800',
-        id: 123456,
-      },
-      {
-        title: 'Female backpack',
-        description:
-          'Cute female backpack with large inner compartment',
-        price: '$1200',
-        id: 1234567,
-      },
-      {
-        title: 'Umbrella',
-        description:
-          'Compact umbrella with automatic opening system',
-        price: '$99',
-        id: 12345678,
-      },
-      {
-        title: 'Stylish winter sweater',
-        description:
-          'Wool winter sweater. Suitable for really cold weather',
-        price: '$700',
-        id: 123456789,
-      },
-      {
-        title: 'Fitness watch',
-        description:
-          'Fitness watch for tracking health and body condition',
-        price: '$150',
-        id: 1234567890,
-      },
-      {
-        title: 'Comfortable chair',
-        description:
-          'Comfortable chair made of natural wood. Great for home decor',
-        price: '$1000',
-        id: 223,
-      },
-    ],
+    // cards: [
+    //   {
+    //     title: 'Stylish dress',
+    //     description:
+    //       'Elegant dress made of natural material. Suitable for special occasions',
+    //     price: '$1200',
+    //     id: 123,
+    //   },
+    //   {
+    //     title: 'Sports shoes',
+    //     description:
+    //       'Comfortable sports shoes. Perfect for running and hiking',
+    //     price: '$2200',
+    //     id: 1234,
+    //   },
+    //   {
+    //     title: 'Sunglasses',
+    //     description:
+    //       'Fashionable sunglasses. High-tech lenses protect your eyes',
+    //     price: '$700',
+    //     id: 12345,
+    //   },
+    //   {
+    //     title: 'Male watch',
+    //     description: 'Elegant male watch with leather band',
+    //     price: '$800',
+    //     id: 123456,
+    //   },
+    //   {
+    //     title: 'Female backpack',
+    //     description:
+    //       'Cute female backpack with large inner compartment',
+    //     price: '$1200',
+    //     id: 1234567,
+    //   },
+    //   {
+    //     title: 'Umbrella',
+    //     description:
+    //       'Compact umbrella with automatic opening system',
+    //     price: '$99',
+    //     id: 12345678,
+    //   },
+    //   {
+    //     title: 'Stylish winter sweater',
+    //     description:
+    //       'Wool winter sweater. Suitable for really cold weather',
+    //     price: '$700',
+    //     id: 123456789,
+    //   },
+    //   {
+    //     title: 'Fitness watch',
+    //     description:
+    //       'Fitness watch for tracking health and body condition',
+    //     price: '$150',
+    //     id: 1234567890,
+    //   },
+    //   {
+    //     title: 'Comfortable chair',
+    //     description:
+    //       'Comfortable chair made of natural wood. Great for home decor',
+    //     price: '$1000',
+    //     id: 223,
+    //   },
+    // ],
   })
   // ↑↑ сюди вводимо JSON дані
 })
 //================================================
 router.get('/product-edit', function (req, res) {
-  // console.log(req.body)
-  const { name, price, description } = req.body
   const { id } = req.query
-
-  let result = false
 
   const product = Product.getById(Number(id))
 
   if (product) {
-    Product.update(product, { name })
-    result = true
+    res.render('product-edit', {
+      style: 'product-edit',
+      product: product,
+    })
+  } else {
+    res.render('product-edit', {
+      style: 'product-edit',
+      info: 'Product not found',
+    })
   }
-  if (product) {
-    Product.update(product, { price })
-    result = true
-  }
-  if (product) {
-    Product.update(product, { description })
-    result = true
-  }
-
-  res.render('product-edit', {
-    style: 'product-edit',
-    info: result,
-  })
 })
 //================================================
 router.post('/product-edit', function (req, res) {
   // console.log(req.body)
-  const { name, price, description } = req.body
-  let result = false
-  const { id } = req.query
-
+  const { id, name, price, description } = req.body
+  //
   const product = Product.getById(Number(id))
 
   if (product) {
-    Product.update(product, { name })
-    result = true
+    const isUpdated = Product.updateById(Number(id), {
+      name,
+      price,
+      description,
+      id,
+    })
+    if (isUpdated) {
+      const updatedProductList = Product.getList()
+      res.render('product-list', {
+        style: 'product-list',
+        data: {
+          products: {
+            list: updatedProductList,
+            isEmpty: updatedProductList.length === 0,
+          },
+        },
+      })
+    } else {
+      res.render('product-alert', {
+        style: 'product-alert',
+        info: 'Product was deleted',
+      })
+    }
   }
-  if (product) {
-    Product.update(product, { price })
-    result = true
-  }
-  if (product) {
-    Product.update(product, { description })
-    result = true
+  // res.render('product-alert', {
+  //   style: 'product-alert',
+  //   info: 'Product was updated successfully',
+  // })
+  else {
+    res.render('product-alert', {
+      style: 'product-alert',
+      info: 'Product not found',
+    })
   }
 
-  res.render('product-alert', {
-    style: 'product-alert',
-    info: result
-      ? 'Product name was updated'
-      : 'Error occured',
-  })
+  // res.render('product-alert', {
+  //   style: 'product-alert',
+  //   info: result
+  //     ? 'Product name was updated'
+  //     : 'Error occured',
+  // })
 })
 // Підключаємо роутер до бек-енду
 module.exports = router

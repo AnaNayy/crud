@@ -9,7 +9,7 @@
     <form method='POST' action='/product-list'></form>
 
     <div class='triple_field'>
-      {{#each cards}}
+      {{#each data.products.list}}
       {{> product-card}}
       {{/each}}
     </div>
