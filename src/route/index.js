@@ -139,12 +139,6 @@ router.post('/user-update', function (req, res) {
     result = true
   }
 
-  // console.log(email, password, id)
-  // let result = false;
-  // if()
-
-  //  const result = User.updateById(Number(id), {email})
-
   res.render('success-info', {
     style: 'success-info',
     info: result
@@ -162,8 +156,6 @@ class Product {
     this.description = description
     this.id = Math.floor(Math.random() * 90000) + 10000
   }
-
-  // verifyPassword = (password) => this.password === password
 
   static add = (product) => {
     this.#list.push(product)
@@ -197,8 +189,18 @@ class Product {
       return false
     }
   }
+  static update = (id, { name, price, description }) => {
+    if (name) {
+      this.name = name
+    }
+    if (price) {
+      this.price = price
+    }
+    if (description) {
+      this.description = description
+    }
+  }
 }
-
 // ==============
 router.get('/product-create', function (req, res) {
   // res.render генерує нам HTML сторінку
@@ -224,7 +226,6 @@ router.post('/product-create', function (req, res) {
   const { name, price, description } = req.body
 
   const product = new Product(name, price, description)
-  // const { id } = req.query
 
   Product.add(product)
 
@@ -249,19 +250,24 @@ router.post('/product-create', function (req, res) {
 router.get('/product-delete', function (req, res) {
   const { id } = req.query
 
-  const isDeleted = Product.deleteById(Number(id))
+  Product.deleteById(Number(id))
+  res.render('product-alert', {
+    style: 'product-alert',
+    info: 'Product was deleted',
+  })
+  // const isDeleted = Product.deleteById(Number(id))
 
-  if (isDeleted) {
-    res.render('product-alert', {
-      style: 'product-alert',
-      info: 'Product was deleted',
-    })
-  } else {
-    res.render('product-alert', {
-      style: 'product-alert',
-      info: 'Failed to delete product',
-    })
-  }
+  // if (isDeleted) {
+  //   res.render('product-alert', {
+  //     style: 'product-alert',
+  //     info: 'Product was deleted',
+  //   })
+  // } else {
+  //   res.render('product-alert', {
+  //     style: 'product-alert',
+  //     info: 'Failed to delete product',
+  //   })
+  // }
 })
 // ==============
 
@@ -281,70 +287,6 @@ router.get('/product-list', function (req, res) {
         isEmpty: list.length === 0,
       },
     },
-    // cards: [
-    //   {
-    //     title: 'Stylish dress',
-    //     description:
-    //       'Elegant dress made of natural material. Suitable for special occasions',
-    //     price: '$1200',
-    //     id: 123,
-    //   },
-    //   {
-    //     title: 'Sports shoes',
-    //     description:
-    //       'Comfortable sports shoes. Perfect for running and hiking',
-    //     price: '$2200',
-    //     id: 1234,
-    //   },
-    //   {
-    //     title: 'Sunglasses',
-    //     description:
-    //       'Fashionable sunglasses. High-tech lenses protect your eyes',
-    //     price: '$700',
-    //     id: 12345,
-    //   },
-    //   {
-    //     title: 'Male watch',
-    //     description: 'Elegant male watch with leather band',
-    //     price: '$800',
-    //     id: 123456,
-    //   },
-    //   {
-    //     title: 'Female backpack',
-    //     description:
-    //       'Cute female backpack with large inner compartment',
-    //     price: '$1200',
-    //     id: 1234567,
-    //   },
-    //   {
-    //     title: 'Umbrella',
-    //     description:
-    //       'Compact umbrella with automatic opening system',
-    //     price: '$99',
-    //     id: 12345678,
-    //   },
-    //   {
-    //     title: 'Stylish winter sweater',
-    //     description:
-    //       'Wool winter sweater. Suitable for really cold weather',
-    //     price: '$700',
-    //     id: 123456789,
-    //   },
-    //   {
-    //     title: 'Fitness watch',
-    //     description:
-    //       'Fitness watch for tracking health and body condition',
-    //     price: '$150',
-    //     id: 1234567890,
-    //   },
-    //   {
-    //     title: 'Comfortable chair',
-    //     description:
-    //       'Comfortable chair made of natural wood. Great for home decor',
-    //     price: '$1000',
-    //     id: 223,
-    //   },
-    // ],
   })
   // ↑↑ сюди вводимо JSON дані
 })
@@ -368,53 +310,27 @@ router.get('/product-edit', function (req, res) {
 })
 //================================================
 router.post('/product-edit', function (req, res) {
-  // console.log(req.body)
   const { id, name, price, description } = req.body
   //
-  const product = Product.getById(Number(id))
+  const product = Product.updateById(Number(id), {
+    name,
+    price,
+    description,
+  })
 
+  console.log(id)
+  console.log(product)
   if (product) {
-    const isUpdated = Product.updateById(Number(id), {
-      name,
-      price,
-      description,
-      id,
-    })
-    if (isUpdated) {
-      const updatedProductList = Product.getList()
-      res.render('product-list', {
-        style: 'product-list',
-        data: {
-          products: {
-            list: updatedProductList,
-            isEmpty: updatedProductList.length === 0,
-          },
-        },
-      })
-    } else {
-      res.render('product-alert', {
-        style: 'product-alert',
-        info: 'Product was deleted',
-      })
-    }
-  }
-  // res.render('product-alert', {
-  //   style: 'product-alert',
-  //   info: 'Product was updated successfully',
-  // })
-  else {
     res.render('product-alert', {
       style: 'product-alert',
-      info: 'Product not found',
+      info: 'Information about product was updated',
+    })
+  } else {
+    res.render('product-alert', {
+      style: 'product-alert',
+      info: 'Error occured',
     })
   }
-
-  // res.render('product-alert', {
-  //   style: 'product-alert',
-  //   info: result
-  //     ? 'Product name was updated'
-  //     : 'Error occured',
-  // })
 })
 // Підключаємо роутер до бек-енду
 module.exports = router
