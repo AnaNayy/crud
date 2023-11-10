@@ -6,12 +6,13 @@
 <main>
   <section class='form'>
     <h1 class='form_title title_blue'>Product list</h1>
-    <form method='POST' action='/product-list'></form>
+    {{! <form method='POST' action='/product-list'></form> }}
 
     <div class='triple_field'>
-      {{#each data.products.list}}
+      {{!-- {{#each data.products.list}}
       {{> product-card}}
-      {{/each}}
+      {{/each}} --}}
+      {{> product-card}}
     </div>
   </section>
 

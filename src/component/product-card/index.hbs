@@ -1,4 +1,5 @@
-
+{{#with data.products}}
+{{#each lists}}
  <div class='product__card'>
         <h2 class='product__card_title'>{{name}}</h3>
         <p class='product__description'>{{description}}</p>
@@ -8,3 +9,5 @@
       <a href='/product-edit?id={{id}}' class="product__edit_button">Edit</a>
   </div>
  </div>
+ {{/each}}
+{{/with}}

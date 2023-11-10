@@ -8,58 +8,63 @@
 
     <div class='form'>
       <h1 class='form__title'>Product information</h1>
-      <form method='POST' action='/product-edit'>
-        <div class='form__content'>
-          <div class='triple_field'>
-            <div class='form__field'>
-              <label class='form__label'>Product name</label>
-              <input
-                type='name'
-                name='name'
-                class='form__input'
-              />
+      {{#with data}}
+        <form method='POST' action='/product-edit'>
+          <div class='form__content'>
+            <div class='triple_field'>
+              <div class='form__field'>
+                <label class='form__label'>Product name</label>
+                <input
+                  type='name'
+                  name='name'
+                  class='form__input'
+                />
+              </div>
+              <div class='form__field'>
+                <label
+                  for='price'
+                  class='form__label'
+                >Price</label>
+                <input
+                  type='price'
+                  name='price'
+                  class='form__input'
+                />
+              </div>
+              <div class='form__field'>
+                <label
+                  for='id'
+                  class='form__label'
+                >ID</label>
+                <input
+                  type='id'
+                  name='id'
+                  class='form__input'
+                />
+              </div>
             </div>
             <div class='form__field'>
-              <label
-                for='price'
-                class='form__label'
-              >Price</label>
+              <label class='form__label'>Brief product
+                description</label>
               <input
-                type='price'
-                name='price'
-                class='form__input'
+                type='description'
+                name='description'
+                class='form__input form__large'
               />
             </div>
-            <div class='form__field'>
-              <label for='id' class='form__label'>ID</label>
-              <input
-                type='id'
-                name='id'
-                class='form__input'
-              />
-            </div>
-          </div>
-          <div class='form__field'>
-            <label class='form__label'>Brief product
-              description</label>
-            <input
-              type='description'
-              name='description'
-              class='form__input form__large'
-            />
-          </div>
-          <textarea>Displays in the product card</textarea>
-          <div class='double_field'>
-            <button class='form__button button_save'>Save
-              the updates</button>
+            <textarea>Displays in the product card</textarea>
+            <div class='double_field'>
+              <button class='form__button button_save'>Save
+                the updates</button>
 
-            <a
-              href='/product-delete?id={{id}}'
-              class='form__button button_delete'
-            >Delete product</a>
+              <a
+                href='/product-delete?id={{id}}'
+                class='form__button button_delete'
+              >Delete product</a>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      {{/with}}
     </div>
 
   </section>
