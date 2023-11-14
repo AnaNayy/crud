@@ -1,0 +1,13 @@
+{{#with data.products}}
+{{#each list}}
+ <div class='product__card'>
+        <h2 class='product__card_title'>{{name}}</h3>
+        <p class='product__description'>{{description}}</p>
+        <span class='product__id'>ID: {{id}}</span>
+  <div class="bottom">
+      <h2 class="product__price">{{price}}</h2>
+      <a href='/product-edit?id={{id}}' class="product__edit_button">Edit</a>
+  </div>
+ </div>
+ {{/each}}
+{{/with}}
