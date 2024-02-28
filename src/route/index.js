@@ -526,7 +526,7 @@ router.get('/purchase-details', function (req, res) {
 
 //=====
 router.get('/purchase-edit-form', function (req, res) {
-  const id = Number(req.query)
+  const id = Number(req.query.id)
   const purchase = PurchaseCreate.getById(id)
 
   if (!purchase) {
