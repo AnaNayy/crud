@@ -1,0 +1,15 @@
+{{!-- <button class='button'>{{text}}{{#if price}}:
+    {{price}}
+    грн{{/if}}</button> --}}
+
+<button
+  class='button {{class}}'
+  onclick="redirectToPage('{{href}}')"
+>
+  {{text}}{{#if price}}: {{price}} грн{{/if}}
+</button>
+
+<script>
+  function redirectToPage(href) { window.location.href =
+  href; }
+</script>
