@@ -1,0 +1,18 @@
+{{! 
+Це код container файлу для index сторінки, 
+в якому міститься код, котрий буде віддаватися по шляху (PATH) - "/"
+ }}
+ <main class="main">
+
+  {{> heading title="Мої замовлення" }}
+
+  {{> divider}}
+
+      <div class="purchase-list">
+        {{#each purchases}}
+
+              {{> purchase-block}}
+          {{> divider}}
+        {{/each}}
+      </div>
+</main>

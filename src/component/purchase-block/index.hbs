@@ -1,0 +1,25 @@
+<a href='/purchase-details?id={{id}}'>
+  "<div class='product-list purchase-block'>
+    <h2 class='product-info__subtitle'>ID: {{this.id}}</h2>
+
+    <div class='product-info'>
+      <p class='product-info__subtitle'>Товари:</p>
+      <p
+        class='product-info__title'
+      >{{this.product.title}}</p>
+    </div>
+    <div class='product-info'>
+      <p class='product-info__subtitle'>Сума замовлення:</p>
+      <p class='product-info__title'>{{this.totalPrice}}
+        ₴</p>
+    </div>
+    <div class='product-info'>
+      <p class='product-info__subtitle'>Нараховані бонуси:
+      </p>
+      <p class='product-info__title'>{{this.bonus}} ₴</p>
+
+    </div>
+    {{! <a href='/purchase-details'></a> }}
+    {{!-- {{>button text="Переглянути замовлення" href="/purchase-details?id={{id}}"}} --}}
+  </div>
+</a>
