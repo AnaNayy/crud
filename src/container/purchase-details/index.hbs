@@ -8,43 +8,52 @@
             <ul class="cart double_field">
                 <li class="column">
                     <span>Ім'я:</span>
-                    <span>lj;p{{firstname}}</span>
+                    <span>{{firstname}}</span>
                     </li>
                 <li class="column"> 
                      <span>Прізвище:</span>
-                    <span>lastname{{lastname}}</span>
+                    <span>{{lastname}}</span>
                     </li>
                 <li class="column">  <span>Телефон:</span>
-                    <span>lj;p{{phone}}</span></li>
+                    <span>{{phone}}</span></li>
                 <li class="column"> 
                      <span>Електронна пошта:</span>
-                    <span>lj;p{{email}}</span></li>
+                    <span>{{email}}</span></li>
             </ul>
     
     {{>divider}}
     <div class="column">
         <p>Назва товару:</p>
-         <span>hi{{this.product.title}}</span>
+         <span>{{product}}</span>
         </div>
 
     <div class="column">
         <p>Коментар:</p>
-         <span>hola{{this.product.comment}}</span>
+         <span>{{comment}}</span>
      </div>
 
 
  {{>divider}}
   <ul class="cart double_field">
-                <li class="column">Вартість товарів:</li>
-                <li class="column">Сума до сплати:</li>
-                <li class="column">Вартість доставки:</li>
-                <li class="column">Нараховані бонуси:</li>
+                <li class="column">
+                    <span>Вартість товарів:</span> 
+                    <span>{{productPrice}} ₴</span></li>
+                <li class="column">
+                    <span>Сума до сплати:</span> 
+                    <span>{{totalPrice}} ₴</span></li>
+                <li class="column">
+                    <span>Вартість доставки:</span> <span>{{deliveryPrice}} ₴</span></li>
+                <li class="column">
+                    <span>Нараховані бонуси: </span>
+                    <span>{{bonus}} ₴</span></li>
             </ul>
 
     {{>divider}}
 
 
-    {{>button text="Змінити дані"}}
+    {{!-- {{>button text="Змінити дані" href="/purchase-edit-form?id={{id}}"}}
+     --}}
+    <a href="/purchase-edit-form?id={{id}}" class="button">Змінити дані</a>
 
     </form>
     {{/with}}

@@ -110,6 +110,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   text-decoration: none;
+  text-align: center;
 }
 .button:hover {
   background-color: rgb(118, 99, 241);
@@ -164,6 +165,10 @@
 .purchase-block {
   margin-bottom: 24px;
   margin-top: 24px;
+}
+
+a {
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=style.css.map */

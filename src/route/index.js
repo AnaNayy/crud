@@ -322,9 +322,6 @@ router.post('/purchase-create', function (req, res) {
   //here//
 })
 router.post('/purchase-submit', function (req, res) {
-  // console.log(req.query)
-  // console.log(req.body)
-
   const id = Number(req.query.id)
 
   let {
@@ -374,23 +371,23 @@ router.post('/purchase-submit', function (req, res) {
   amount = Number(amount)
   bonus = Number(bonus)
 
-  if (
-    isNaN(totalPrice) ||
-    isNaN(productPrice) ||
-    isNaN(deliveryPrice) ||
-    isNaN(amount) ||
-    isNaN(bonus)
-  ) {
-    return res.render('alert', {
-      style: 'alert',
+  // if (
+  //   isNaN(totalPrice) ||
+  //   isNaN(productPrice) ||
+  //   isNaN(deliveryPrice) ||
+  //   isNaN(amount) ||
+  //   isNaN(bonus)
+  // ) {
+  //   return res.render('alert', {
+  //     style: 'alert',
 
-      data: {
-        message: 'Помилка',
-        info: 'Некоректні дані',
-        link: `/purchase-list`,
-      },
-    })
-  }
+  //     data: {
+  //       message: 'Помилка',
+  //       info: 'Некоректні дані',
+  //       link: `/purchase-list`,
+  //     },
+  //   })
+  // }
 
   // перевіряємо чи заповнені всі обовʼязкові поля
 
@@ -500,9 +497,9 @@ router.get('/purchase-details', function (req, res) {
   console.log('Requested purchase id:', id)
 
   const purchase = PurchaseCreate.getById(id)
-  // const bonus = PurchaseCreate.calcBonusAmount(
-  //   purchase.totalPrice,
-  // )
+  const bonus = PurchaseCreate.calcBonusAmount(
+    purchase.totalPrice,
+  )
 
   console.log('purchase:', purchase)
   // ↙️ cюди вводимо назву файлу з сontainer
@@ -515,25 +512,89 @@ router.get('/purchase-details', function (req, res) {
       lastname: purchase.lastname,
       phone: purchase.phone,
       email: purchase.email,
+      comment: purchase.comment,
       delivery: purchase.delivery,
       product: purchase.product.title,
       productPrice: purchase.productPrice,
       deliveryPrice: purchase.deliveryPrice,
       totalPrice: purchase.totalPrice,
-      // bonus: bonus,
+      bonus: bonus,
     },
   })
   // ↑↑ сюди вводимо JSON дані
 })
+
+//=====
+router.get('/purchase-edit-form', function (req, res) {
+  const id = Number(req.query)
+  const purchase = PurchaseCreate.getById(id)
+
+  if (!purchase) {
+    res.render('alert', {
+      style: 'alert',
+      data: {
+        info: 'Замовлення з таким ID не знайдено',
+      },
+    })
+  } else {
+    res.render('purchase-edit-form', {
+      style: 'purchase-edit-form',
+      data: {
+        id: purchase.id,
+        firstname: purchase.firstname,
+        lastname: purchase.lastname,
+        phone: purchase.phone,
+        email: purchase.email,
+      },
+    })
+  }
+})
 // ================================================================
-router.post('/purchase-details', function (req, res) {
-  res.render('a', {
-    // вказуємо назву папки контейнера, в якій знаходяться наші стилі
-    style: 'product-alert',
-    info: 'Товар успішно додано',
-    link: `/#`,
-  })
-  // ↑↑ сюди вводимо JSON дані
+router.post('/purchase-edit-form', function (req, res) {
+  const id = Number(req.query.id)
+  let { firstname, lastname, phone, email } = req.body
+
+  const purchase = PurchaseCreate.getById(id)
+
+  if (purchase) {
+    const newPurchase = PurchaseCreate.updateById(id, {
+      firstname,
+      lastname,
+      phone,
+      email,
+      //delivery,
+    })
+    console.log(newPurchase)
+
+    if (newPurchase) {
+      res.render('alert', {
+        // вказуємо назву папки контейнера, в якій знаходяться наші стилі
+        style: 'alert',
+        data: {
+          message: 'Інформація про замовлення оновлена',
+          link: `/purchase-list`,
+          info: 'Успішна дія',
+        },
+      })
+    } else {
+      res.render('alert', {
+        style: 'alert',
+        data: {
+          message:
+            'Помилка при оновленні інформації про замовлення',
+          link: `/purchase-list`,
+        },
+      })
+    }
+  } else {
+    res.render('alert', {
+      style: 'alert',
+      data: {
+        message: 'Помилка: Покупка не знайдена',
+        link: `/purchase-list`,
+      },
+    })
+  }
 })
 //================================================
 // ================================================================
